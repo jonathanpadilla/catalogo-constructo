@@ -1,0 +1,5 @@
+services:
+    service.parameters:
+        class:      AdminBundle\Services\Parameters
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"

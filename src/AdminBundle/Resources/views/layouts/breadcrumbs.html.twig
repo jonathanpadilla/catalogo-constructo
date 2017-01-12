@@ -1,0 +1,26 @@
+<!-- Start: Topbar -->
+<header id="topbar" class="">
+	<div class="topbar-left">
+	  <ol class="breadcrumb">
+	    <li class="crumb-active">
+	      <a href="#">{{ default_data.breadcrumbs|last }}</a>
+	    </li>
+	    <li class="crumb-icon">
+	      <a href="{{ url('admin_inicio') }}">
+	        <span class="glyphicon glyphicon-home"></span>
+	      </a>
+	    </li>
+
+	    {% for key, value in default_data.breadcrumbs %}
+	    	{% if value != key %}
+		    	<li class="crumb-link">
+			      <a href="{{ value }}">{{ key }}</a>
+			    </li>
+			{% else %}
+				<li class="crumb-trail">{{ key }}</li>
+			{% endif %}
+	    {% endfor %}
+	  </ol>
+	</div>
+</header>
+<!-- End: Topbar -->

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<div id="main">
+		{% include 'AdminBundle:layouts:header.html.twig' %}
+		{% include 'AdminBundle:layouts:menu_left.html.twig' %}
+		<!-- Start: Content-Wrapper -->
+	    <section id="content_wrapper">
+
+			{% include 'AdminBundle:layouts:breadcrumbs.html.twig' %}
+	      
+
+			<!-- Begin: Content -->
+			<section id="content" class="table-layout animated fadeIn">
+
+			<!-- begin: .tray-center -->
+				<div class="tray tray-center">      
+
+					{% block content %}Default content{% endblock %}
+
+				</div>
+			<!-- end: .tray-center -->
+			</section>
+			<!-- End: Content -->
+
+			{% include 'AdminBundle:layouts:footer.html.twig' %}
+
+	    </section>
+	    <!-- End: Content-Wrapper -->
+
+	</div>
+	{% block modals %}{% endblock %}
+	
+
+{% endblock %}

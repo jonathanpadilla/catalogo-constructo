@@ -1,0 +1,11 @@
+admin_inicio:
+    path:     /
+    defaults: { _controller: AdminBundle:Inicio:index }
+
+admin_catalogo:
+    path:     /catalogo/{id}
+    defaults: { _controller: AdminBundle:Catalogo:index, id:0 }
+
+admin_catalogo_categoria_guardar:
+    path:     /catalogo/categoria/guardar/
+    defaults: { _controller: AdminBundle:Catalogo:guardarCategoria }
