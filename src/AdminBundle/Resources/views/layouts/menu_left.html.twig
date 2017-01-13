@@ -10,8 +10,8 @@ Start: Sidebar -->
     <ul class="nav sidebar-menu">
       <li class="sidebar-label pt20">Catalogo</li>
       {% for categoria in menu_categorias %}
-        <li class="active">
-          <a class="accordion-toggle" href="#">
+        <li {{ categoria.active is defined ? 'class="active"' }}>
+          <a class="accordion-toggle {{ categoria.active is defined ? 'menu-open' }}" href="#">
             <span class="glyphicon glyphicon-folder-open"></span>
             <span class="sidebar-title">{{ categoria.nombre }}</span>
             {% if categoria.sub is defined %}<span class="caret"></span>{% endif %}
@@ -19,8 +19,8 @@ Start: Sidebar -->
           {% if categoria.sub is defined %}
             <ul class="nav sub-nav">
               {% for sub_categoria in categoria.sub %}
-              <li>
-                <a href="admin_forms-elements.html">
+              <li {{ sub_categoria.active is defined ? 'class="active"' }}>
+                <a href="{{ url('admin_catalogo', {'id': sub_categoria.id}) }}">
                   <span class="glyphicon glyphicon-file"></span> {{ sub_categoria.nombre }}</a>
               </li>
               {% endfor %}

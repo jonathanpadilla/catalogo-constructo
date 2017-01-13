@@ -23,7 +23,8 @@ class CatalogoController extends Controller
 
     	if($id)
     	{
-
+            $lista_categorias = $this->cargarListaCategoria($id);
+            $parameters->setBreadcrumbs('categoria', $id);
     	}else{
     		$parameters->setBreadcrumbs(array('Catalogo' => 'Catalogo'));
     		$lista_categorias = $this->cargarListaCategoria();
@@ -40,7 +41,7 @@ class CatalogoController extends Controller
     	// 	$parameters->setBreadcrumbs(array('Catalogo' => 'url'));
     	// }
 
-    	// echo '<pre>';print_r($lista_categorias);exit;
+    	// echo '<pre>';print_r($parameters->getAll());exit;
 
         return $this->render('AdminBundle::catalogo.html.twig', array(
         	'default_data' 			=> $parameters->getAll(),
@@ -54,7 +55,7 @@ class CatalogoController extends Controller
     {
     	if( $request->getMethod() == 'POST' )
     	{
-    		$nombre 	= $request->get('nombre', false);
+    		$nombre 	= ucfirst($request->get('nombre', false));
     		$padre 		= $request->get('padre', false);
     		$imagen 	= $request->files->get('imagen', null);
     		$comentario = $request->get('comentario', false);
@@ -117,7 +118,16 @@ class CatalogoController extends Controller
         				$data2->id 		= $value2->getCatIdPk();
         				$data2->nombre 	= $value2->getCatNombre();
 
+                        if($active == $value2->getCatIdPk())
+                        {
+                            $data->active  = true;
+                            $data2->active = true;
+                        }
+
+                        // activar menu
+
         				$data->sub[] = $data2;
+
         			}
         		}
 

@@ -14,7 +14,7 @@
 	    {% for key, value in default_data.breadcrumbs %}
 	    	{% if value != key %}
 		    	<li class="crumb-link">
-			      <a href="{{ value }}">{{ key }}</a>
+			      <a href="{{ url(value.ruta, {'id': value.id}) }}">{{ key }}</a>
 			    </li>
 			{% else %}
 				<li class="crumb-trail">{{ key }}</li>

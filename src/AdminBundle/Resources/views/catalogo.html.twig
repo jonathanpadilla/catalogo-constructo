@@ -1,6 +1,44 @@
 {% extends "AdminBundle:layouts:body.html.twig" %}
 
-{% block content %}Contenido{% endblock %}
+{% block content %}
+
+{% if lista_categorias %}
+
+{% set row = 0 %}
+{% for categoria in lista_categorias %}
+	{% if row == 0 %}
+	<div class="row">
+	{% endif %}
+		<div class="col-md-4">
+			<a href="#" style="text-decoration:none;">
+				<div class="panel">
+				  <div class="panel-heading">
+				    <span class="panel-title">{{ categoria.catNombre }}</span>
+				    <div class="widget-menu pull-right">
+				      <code class="mr10 bg-primary dark p3 ph5">10 sub categorias</code>
+				    </div>
+				  </div>
+				  <div class="panel-body" style="padding:0;">
+				  	<div>
+				  		{% if categoria.catFoto %}
+				  		<img src="{{ absolute_url(asset('uploads/img/'~categoria.catFoto)) }}" alt="" style="width:100%;">
+				  		{% endif %}
+				  	</div>
+				  	<div style="padding:15px;">
+				    	<p>Praesent non nibh nisi. Proin eu massa faucibus, volutpat tellus eu, dapibus velit. Sed feugiat risus at velit lobortis porta.</p>
+				  	</div>
+				  </div>
+				</div>
+			</a>
+		</div>
+
+	{% set row = row + 1 %}
+	{% if row == 3 %}</div>{% set row = 0 %}{% endif %}
+{% endfor %}
+{% if row != 3 %}</div>{% endif %}
+{% endif %}
+
+{% endblock %}
 
 {% block modals %}
 <div class="modal fade" id="modal_nueva_categoria" tabindex="-1" role="dialog" aria-labelledby="modal_nueva_categoriaLabel">

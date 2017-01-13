@@ -32,10 +32,10 @@ class Parameters
     		{
     			$categoria = $this->em->getRepository('AdminBundle:Categoria')->findOneBy(array('catIdPk' => $this->breadcrumbs_value ));
 
-    			$new_breadcrumb = array('Catalogo' => 'url');
+    			$new_breadcrumb = array('Catalogo' => array('ruta' => 'admin_catalogo', 'id'=> 0));
     			if($categoria->getCatPadreFk())
     			{
-    				$new_breadcrumb[$categoria->getCatPadreFk()->getCatNombre()] = 'url';
+    				$new_breadcrumb[$categoria->getCatPadreFk()->getCatNombre()] = array('ruta' => 'admin_catalogo', 'id'=> $categoria->getCatPadreFk()->getCatIdPk());
     			}
     			$new_breadcrumb[$categoria->getCatNombre()] = $categoria->getCatNombre();
     			$return = $new_breadcrumb;
