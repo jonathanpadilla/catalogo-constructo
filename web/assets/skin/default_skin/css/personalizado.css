@@ -1,0 +1,70 @@
+.tph_nombre{
+	font-family: 'Open Sans', sans-serif !important;
+    font-weight: 800;
+    line-height: 1em;
+    color: #002779;
+    margin-bottom: 10px;
+    font-size: 31px;
+    text-transform: uppercase;
+}
+
+.tph_nombre span{
+	font-family: 'Open Sans', sans-serif !important;
+    font-weight: 400;
+}
+
+.tabla_producto_head{
+	min-height: 62px;
+}
+
+.tabla_producto_body table{
+	width: 100%;
+}
+
+.tabla_producto_body table thead{
+	background-color: #002779;
+    color: #fff;
+}
+
+.tabla_producto_body table thead tr th{
+	padding: 3px 10px;
+}
+
+.tabla_producto_body table tbody tr td{
+	padding-top: 10px;
+}
+
+.tabla_producto_body table tbody tr td.opciones{
+	width: 65px;
+}
+
+.tabla_producto_body table tfoot tr td{
+	padding: 0 10px 0 0
+}
+
+.tabla_producto_footer{
+	margin-top: 20px;
+}
+
+.tpf_img img{
+	width: 100%
+}
+
+.linea1{
+	background-color: #002779;
+    width: 100%;
+    height: 5px;
+    margin-top: 18px;
+}
+
+.linea2{
+	width: 100%;
+    background-color: #002779;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #ffde00;
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 5px;
+}

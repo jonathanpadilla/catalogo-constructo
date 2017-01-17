@@ -21,6 +21,11 @@
         <!-- Admin Forms CSS -->
         <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('assets/admin-tools/admin-forms/css/admin-forms.min.css')) }}">
 
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+        <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('assets/skin/default_skin/css/personalizado.css')) }}">
+
         <!-- Favicon -->
         <link rel="shortcut icon" href="{{ absolute_url(asset('assets/img/favicon.ico')) }}">
 
@@ -47,6 +52,7 @@
         <script src="{{ absolute_url(asset('assets/js/utility/utility.js')) }}"></script>
         <script src="{{ absolute_url(asset('assets/js/demo/demo.js')) }}"></script>
         <script src="{{ absolute_url(asset('assets/js/main.js')) }}"></script>
+        <script src="{{ absolute_url(asset('assets/js/custom.js')) }}"></script>
 
         {% block javascripts %}{% endblock %}
 

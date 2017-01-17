@@ -2,30 +2,32 @@
 
 {% block content %}
 
+<!-- cargar lista de categorias -->
 {% if lista_categorias %}
-
 {% set row = 0 %}
 {% for categoria in lista_categorias %}
 	{% if row == 0 %}
 	<div class="row">
 	{% endif %}
 		<div class="col-md-4">
-			<a href="#" style="text-decoration:none;">
+			<a href="{{ url('admin_catalogo', {'id': categoria.catIdPk}) }}" style="text-decoration:none;">
 				<div class="panel">
 				  <div class="panel-heading">
 				    <span class="panel-title">{{ categoria.catNombre }}</span>
 				    <div class="widget-menu pull-right">
-				      <code class="mr10 bg-primary dark p3 ph5">10 sub categorias</code>
+				      <!-- <code class="mr10 bg-primary dark p3 ph5">sub categorias</code> -->
+				      <a href="#" class="btn_editar_categoria text-success" data-id="{{ categoria.catIdPk }}" data-nombre="{{ categoria.catNombre }}" data-padre="{{ categoria.catPadreFk ? categoria.catPadreFk.catIdPk : 'default' }}" data-descripcion="{{ categoria.catDescripcion }}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+				      <a href="#" class="btn_eliminar_categoria text-danger" data-id="{{ categoria.catIdPk }}" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fa fa-trash"></i></a>
 				    </div>
 				  </div>
 				  <div class="panel-body" style="padding:0;">
+				  	{% if categoria.catFoto %}
 				  	<div>
-				  		{% if categoria.catFoto %}
 				  		<img src="{{ absolute_url(asset('uploads/img/'~categoria.catFoto)) }}" alt="" style="width:100%;">
-				  		{% endif %}
 				  	</div>
+				  	{% endif %}
 				  	<div style="padding:15px;">
-				    	<p>Praesent non nibh nisi. Proin eu massa faucibus, volutpat tellus eu, dapibus velit. Sed feugiat risus at velit lobortis porta.</p>
+				    	<p>{{ categoria.catDescripcion }}</p>
 				  	</div>
 				  </div>
 				</div>
@@ -36,6 +38,19 @@
 	{% if row == 3 %}</div>{% set row = 0 %}{% endif %}
 {% endfor %}
 {% if row != 3 %}</div>{% endif %}
+{% else %}
+	<div class="row">
+		<div class="col-md-12">
+			<a id="btn_agregar_tabla" data-categoria="{{ id_categoria }}" href="#" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar tabla</a>
+		</div>
+	</div>
+{% endif %}
+
+<br>
+
+<!--productos-->
+{% if vista_productos %}
+	{{ vista_productos|raw }}
 {% endif %}
 
 {% endblock %}
@@ -90,6 +105,49 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 				<button type="button" id="submit_agregar_categoria" class="btn btn-primary">Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal_nueva_tabla" tabindex="-1" role="dialog" aria-labelledby="modal_nueva_tablaLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Agregar nueva tabla</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<form id="form_agregar_tabla" action="{{ url('admin_catalogo_tabla_guardar') }}" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
+							<input type="hidden" name="id_categoria" id="id_categoria">
+							<div class="form-group">
+			                    <label for="nombre" class="col-lg-3 control-label text-right">Nombre</label>
+			                    <div class="col-lg-8">
+			                        <input type="text" name="nombre" id="nombre" class="form-control">
+			                    </div>
+			                </div>
+			                <div class="form-group">
+			                    <label for="subtexto" class="col-lg-3 control-label text-right">Sub texto</label>
+			                    <div class="col-lg-8">
+			                        <input type="text" name="subtexto" id="subtexto" class="form-control">
+			                    </div>
+			                </div>
+
+			                <div class="form-group">
+			                    <label for="imagen" class="col-lg-3 control-label text-right">Imagen</label>
+			                    <div class="col-lg-8">
+			                        <input type="file" name="imagen" id="imagen" class="form-control" accept="image/x-png,image/jpeg">
+			                    </div>
+			                </div>
+			            </form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" id="submit_agregar_tabla" class="btn btn-primary">Guardar</button>
 			</div>
 		</div>
 	</div>

@@ -9,3 +9,13 @@ admin_catalogo:
 admin_catalogo_categoria_guardar:
     path:     /catalogo/categoria/guardar/
     defaults: { _controller: AdminBundle:Catalogo:guardarCategoria }
+
+admin_catalogo_tabla_guardar:
+    path:     /catalogo/tabla/guardar/
+    defaults: { _controller: AdminBundle:Catalogo:guardarTabla }
+
+admin_catalogo_categoria_eliminar:
+    path:     /catalogo/categoria/eliminar/
+    defaults: { _controller: AdminBundle:Catalogo:eliminarCategoria }
+    options:
+        expose: true

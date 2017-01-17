@@ -1,0 +1,70 @@
+<?php
+
+namespace AdminBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ProductoTipo
+ *
+ * @ORM\Table(name="producto_tipo", indexes={@ORM\Index(name="prt_categoria_fk", columns={"prt_categoria_fk"})})
+ * @ORM\Entity
+ */
+class ProductoTipo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="prt_id_pk", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $prtIdPk;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prt_nombre", type="string", length=100, nullable=true)
+     */
+    private $prtNombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prt_subtexto", type="string", length=100, nullable=true)
+     */
+    private $prtSubtexto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prt_imagen", type="string", length=100, nullable=true)
+     */
+    private $prtImagen;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="prt_activo", type="integer", nullable=true)
+     */
+    private $prtActivo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="prt_fecha_registro", type="datetime", nullable=true)
+     */
+    private $prtFechaRegistro;
+
+    /**
+     * @var \Categoria
+     *
+     * @ORM\ManyToOne(targetEntity="Categoria")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="prt_categoria_fk", referencedColumnName="cat_id_pk")
+     * })
+     */
+    private $prtCategoriaFk;
+
+
+}

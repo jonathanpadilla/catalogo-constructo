@@ -1,0 +1,84 @@
+<?php
+
+namespace AdminBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Producto
+ *
+ * @ORM\Table(name="producto", indexes={@ORM\Index(name="pro_tipo_fk", columns={"pro_tipo_fk"})})
+ * @ORM\Entity
+ */
+class Producto
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="pro_id_pk", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $proIdPk;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="pro_codigo_factusol", type="integer", nullable=true)
+     */
+    private $proCodigoFactusol;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pro_producto", type="string", length=200, nullable=true)
+     */
+    private $proProducto;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="pro_cantidad", type="integer", nullable=true)
+     */
+    private $proCantidad;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="pro_precio_real", type="integer", nullable=true)
+     */
+    private $proPrecioReal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="pro_precio_ventas", type="integer", nullable=true)
+     */
+    private $proPrecioVentas;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="pro_activo", type="integer", nullable=true)
+     */
+    private $proActivo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="pro_fecha_registro", type="datetime", nullable=true)
+     */
+    private $proFechaRegistro;
+
+    /**
+     * @var \ProductoTipo
+     *
+     * @ORM\ManyToOne(targetEntity="ProductoTipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pro_tipo_fk", referencedColumnName="prt_id_pk")
+     * })
+     */
+    private $proTipoFk;
+
+
+}

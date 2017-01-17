@@ -1,0 +1,160 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12">
+						<img src="{{ absolute_url(asset('assets/img/logos/catalogo-logo.png')) }}" alt="">
+						<div class="linea1"></div>
+						<div class="linea2">Texto</div>
+					</div>
+				</div>
+				
+				{% set row = 0 %}
+				{% for producto in lista_productos %}
+				{% if row == 0 %}
+				<div class="row">
+				{% endif %}
+					<div class="col-sm-6">
+						<div class="tabla_producto">
+							<div class="tabla_producto_head">
+								<h3 class="tph_nombre">{{ producto.nombre }} <br> <span>{{ producto.subtext }}</span></h3>
+							</div>
+							<div class="tabla_producto_body">
+								<table>
+									<thead>
+										<tr>
+											<th>Codigo</th>
+											<th>Producto</th>
+											<th>Cantidad</th>
+											<th>Precio</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>12323</td>
+											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
+											<td>12</td>
+											<td>$9.990</td>
+											<td class="opciones">
+												<div class="btn-group">
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-edit"></i>
+													</button>
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>12323</td>
+											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
+											<td>12</td>
+											<td>$9.990</td>
+											<td class="opciones">
+												<div class="btn-group">
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-edit"></i>
+													</button>
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>12323</td>
+											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
+											<td>12</td>
+											<td>$9.990</td>
+											<td class="opciones">
+												<div class="btn-group">
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-edit"></i>
+													</button>
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>12323</td>
+											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
+											<td>12</td>
+											<td>$9.990</td>
+											<td class="opciones">
+												<div class="btn-group">
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-edit"></i>
+													</button>
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>12323</td>
+											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
+											<td>12</td>
+											<td>$9.990</td>
+											<td class="opciones">
+												<div class="btn-group">
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-edit"></i>
+													</button>
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>12323</td>
+											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
+											<td>12</td>
+											<td>$9.990</td>
+											<td class="opciones">
+												<div class="btn-group">
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-edit"></i>
+													</button>
+													<button type="button" class="btn btn-default btn-sm">
+													    <i class="fa fa-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td><input type="text" class="form-control" placeholder="Codigo"></td>
+											<td><input type="text" class="form-control" placeholder="Producto"></td>
+											<td><input type="text" class="form-control" placeholder="Cantidad"></td>
+											<td><input type="text" class="form-control" placeholder="Precio"></td>
+											<td></td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+							<div class="tabla_producto_footer">
+								<div class="tpf_img">
+									<img src="{{ absolute_url(asset('uploads/img/'~producto.imagen)) }}" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+
+				{% set row = row + 1 %}
+				{% if row == 2 %}</div>{% set row = 0 %}{% endif %}
+				{% endfor %}
+
+				{% if row != 2 %}</div>{% endif %}
+
+			</div>
+		</div>
+	</div>
+</div>
