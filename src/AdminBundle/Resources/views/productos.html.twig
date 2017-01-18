@@ -11,14 +11,14 @@
 				</div>
 				
 				{% set row = 0 %}
-				{% for producto in lista_productos %}
+				{% for tabla in lista_productos %}
 				{% if row == 0 %}
 				<div class="row">
 				{% endif %}
 					<div class="col-sm-6">
 						<div class="tabla_producto">
 							<div class="tabla_producto_head">
-								<h3 class="tph_nombre">{{ producto.nombre }} <br> <span>{{ producto.subtext }}</span></h3>
+								<h3 class="tph_nombre">{{ tabla.nombre }} <br> <span>{{ tabla.subtext }}</span></h3>
 							</div>
 							<div class="tabla_producto_body">
 								<table>
@@ -32,11 +32,12 @@
 										</tr>
 									</thead>
 									<tbody>
+										{% for producto in tabla.productos %}
 										<tr>
-											<td>12323</td>
-											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
-											<td>12</td>
-											<td>$9.990</td>
+											<td>{{ producto.codigo }}</td>
+											<td>{{ producto.producto }}</td>
+											<td>{{ producto.cantidad }}</td>
+											<td>${{ producto.precioReal|number_format(0, ',', '.') }}</td>
 											<td class="opciones">
 												<div class="btn-group">
 													<button type="button" class="btn btn-default btn-sm">
@@ -48,101 +49,27 @@
 												</div>
 											</td>
 										</tr>
-										<tr>
-											<td>12323</td>
-											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
-											<td>12</td>
-											<td>$9.990</td>
-											<td class="opciones">
-												<div class="btn-group">
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-edit"></i>
-													</button>
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>12323</td>
-											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
-											<td>12</td>
-											<td>$9.990</td>
-											<td class="opciones">
-												<div class="btn-group">
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-edit"></i>
-													</button>
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>12323</td>
-											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
-											<td>12</td>
-											<td>$9.990</td>
-											<td class="opciones">
-												<div class="btn-group">
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-edit"></i>
-													</button>
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>12323</td>
-											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
-											<td>12</td>
-											<td>$9.990</td>
-											<td class="opciones">
-												<div class="btn-group">
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-edit"></i>
-													</button>
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>12323</td>
-											<td>MEMBR. ASF. JJ-25 1 X 10 MT</td>
-											<td>12</td>
-											<td>$9.990</td>
-											<td class="opciones">
-												<div class="btn-group">
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-edit"></i>
-													</button>
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
+										{% endfor %}
 									</tbody>
-									<tfoot>
-										<tr>
-											<td><input type="text" class="form-control" placeholder="Codigo"></td>
-											<td><input type="text" class="form-control" placeholder="Producto"></td>
-											<td><input type="text" class="form-control" placeholder="Cantidad"></td>
-											<td><input type="text" class="form-control" placeholder="Precio"></td>
-											<td></td>
-										</tr>
-									</tfoot>
 								</table>
+								<form action="{{ url('admin_catalogo_producto_guardar') }}" method="post" class="form_agregar_producto">
+									<input type="hidden" name="tabla" value="{{ tabla.id }}">
+									<table class="table_form">
+										<tfoot>
+												<tr>
+													<td><input type="text" class="form-control" name="codigo" id="codigo" placeholder="Codigo"></td>
+													<td><input type="text" class="form-control" name="producto" id="producto" placeholder="Producto"></td>
+													<td><input type="text" class="form-control" name="cantidad" id="cantidad" placeholder="Cantidad"></td>
+													<td><input type="number" class="form-control" name="precio" id="precio" placeholder="Precio"></td>
+													<td><button type="submit" class="btn btn-primary btn_agregar_producto" style="width:100%;"><i class="fa fa-save"></i></button></td>
+												</tr>
+										</tfoot>
+									</table>
+								</form>
 							</div>
 							<div class="tabla_producto_footer">
 								<div class="tpf_img">
-									<img src="{{ absolute_url(asset('uploads/img/'~producto.imagen)) }}" alt="">
+									<img src="{{ absolute_url(asset('uploads/img/'~tabla.imagen)) }}" alt="">
 								</div>
 							</div>
 						</div>

@@ -39,7 +39,7 @@
 }
 
 .tabla_producto_body table tfoot tr td{
-	padding: 0 10px 0 0
+	padding: 10px 10px 0 0
 }
 
 .tabla_producto_footer{
@@ -67,4 +67,9 @@
     font-weight: 700;
     text-transform: uppercase;
     padding: 5px;
+}
+
+.table_form tr td{
+    height: 75px;
+    vertical-align: text-top;
 }

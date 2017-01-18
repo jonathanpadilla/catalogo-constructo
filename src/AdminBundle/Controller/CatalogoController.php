@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AdminBundle\Entity\Categoria;
 use AdminBundle\Entity\ProductoTipo;
+use AdminBundle\Entity\Producto;
 use \stdClass;
 
 class CatalogoController extends Controller
@@ -272,6 +273,7 @@ class CatalogoController extends Controller
                             $datos2 = new stdClass();
 
                             $datos2->id             = $value2->getProIdPk();
+                            $datos2->codigo         = $value2->getProCodigo();
                             $datos2->codigo_factura = $value2->getProCodigoFactusol();
                             $datos2->producto       = $value2->getProProducto();
                             $datos2->cantidad       = $value2->getProCantidad();
@@ -292,6 +294,36 @@ class CatalogoController extends Controller
         }
 
         return $result;
+    }
+
+    public function guardarProductoAction(Request $request)
+    {
+        if( $request->getMethod() == 'POST' )
+        {
+            $tabla              = $request->get('tabla');
+            $codigo             = $request->get('codigo');
+            $nombre_producto    = ucfirst($request->get('producto'));
+            $cantidad           = $request->get('cantidad');
+            $precio             = $request->get('precio');
+
+            $em = $this->getDoctrine()->getManager();
+
+            $fk_tabla = $em->getRepository('AdminBundle:ProductoTipo')->findOneBy(array('prtIdPk' => $tabla));
+
+            $producto = new Producto();
+            $producto->setProCodigo($codigo);
+            $producto->setProProducto($nombre_producto);
+            $producto->setProCantidad($cantidad);
+            $producto->setProPrecioReal($precio);
+            $producto->setProActivo(1);
+            $producto->setProFechaRegistro(new \DateTime(date("Y-m-d H:i:s")));
+            $producto->setProTipoFk($fk_tabla);
+            $em->persist($producto);
+            $em->flush();
+
+        }
+
+        return $this->redirectToRoute('admin_catalogo', array('id' => $fk_tabla->getPrtCategoriaFk()->getCatIdPk() ));
     }
 
     private function subirImagen($foto)

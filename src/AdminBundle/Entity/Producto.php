@@ -24,6 +24,13 @@ class Producto
     /**
      * @var integer
      *
+     * @ORM\Column(name="pro_codigo", type="integer", nullable=true)
+     */
+    private $proCodigo;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="pro_codigo_factusol", type="integer", nullable=true)
      */
     private $proCodigoFactusol;
@@ -90,6 +97,29 @@ class Producto
     public function getProIdPk()
     {
         return $this->proIdPk;
+    }
+
+    /**
+     * Set proCodigo
+     *
+     * @param integer $proCodigo
+     * @return Producto
+     */
+    public function setProCodigo($proCodigo)
+    {
+        $this->proCodigo = $proCodigo;
+
+        return $this;
+    }
+
+    /**
+     * Get proCodigo
+     *
+     * @return integer 
+     */
+    public function getProCodigo()
+    {
+        return $this->proCodigo;
     }
 
     /**

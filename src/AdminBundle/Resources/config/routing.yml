@@ -14,6 +14,10 @@ admin_catalogo_tabla_guardar:
     path:     /catalogo/tabla/guardar/
     defaults: { _controller: AdminBundle:Catalogo:guardarTabla }
 
+admin_catalogo_producto_guardar:
+    path:     /catalogo/producto/guardar/
+    defaults: { _controller: AdminBundle:Catalogo:guardarProducto }
+
 admin_catalogo_categoria_eliminar:
     path:     /catalogo/categoria/eliminar/
     defaults: { _controller: AdminBundle:Catalogo:eliminarCategoria }
