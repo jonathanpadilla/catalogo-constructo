@@ -136,7 +136,22 @@ class CatalogoController extends Controller
 
         }
 
-        return $this->redirectToRoute('admin_catalogo');
+        return $this->redirectToRoute('admin_catalogo', array('id' => $fk_categoria->getCatIdPk() ));
+    }
+
+    public function eliminarTablaAction(Request $request)
+    {
+        $id = $request->get('id', false);
+        $em = $this->getDoctrine()->getManager();
+
+        if($tabla = $em->getRepository('AdminBundle:ProductoTipo')->findOneBy(array('prtIdPk' => $id)))
+        {
+            $tabla->setPrtActivo(0);
+            $em->persist($tabla);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('admin_catalogo', array('id' => $tabla->getPrtCategoriaFk()->getCatIdPk() ));
     }
 
     private function cargarMenuCategoria($active = false)
@@ -260,13 +275,15 @@ class CatalogoController extends Controller
                 {
                     $datos = new stdClass();
 
-                    $datos->id          = $value->getPrtIdPk();
-                    $datos->nombre      = $value->getPrtNombre();
-                    $datos->subtext     = $value->getPrtSubtexto();
-                    $datos->imagen      = $value->getPrtImagen();
-                    $datos->productos   = array();
+                    $datos->id              = $value->getPrtIdPk();
+                    $datos->nombre          = $value->getPrtNombre();
+                    $datos->subtext         = $value->getPrtSubtexto();
+                    $datos->imagen          = $value->getPrtImagen();
+                    $datos->catalogo        = $value->getPrtCategoriaFk()->getCatIdPk();
+                    $datos->catalogo_nombre = $value->getPrtCategoriaFk()->getCatNombre();
+                    $datos->productos       = array();
 
-                    if($producto = $em->getRepository('AdminBundle:Producto')->findBy(array('proTipoFk' => $datos->id, 'proActivo' => 1 )))
+                    if($producto = $em->getRepository('AdminBundle:Producto')->findBy(array('proTipoFk' => $datos->id )))
                     {
                         foreach($producto as $value2)
                         {
@@ -279,6 +296,7 @@ class CatalogoController extends Controller
                             $datos2->cantidad       = $value2->getProCantidad();
                             $datos2->precioReal     = $value2->getProPrecioReal();
                             $datos2->precioVenta    = $value2->getProPrecioVentas();
+                            $datos2->activo         = $value2->getProActivo();
 
                             $datos->productos[] = $datos2;
                         }
@@ -324,6 +342,53 @@ class CatalogoController extends Controller
         }
 
         return $this->redirectToRoute('admin_catalogo', array('id' => $fk_tabla->getPrtCategoriaFk()->getCatIdPk() ));
+    }
+
+    public function editarProductoAction(Request $request)
+    {
+        $result = false;
+        if( $request->getMethod() == 'POST' )
+        {
+            $id                 = $request->get('id');
+            $codigo             = $request->get('codigo');
+            $nombre_producto    = ucfirst($request->get('producto'));
+            $cantidad           = $request->get('cantidad');
+            $precioreal         = $request->get('precioreal');
+
+            $em = $this->getDoctrine()->getManager();
+
+            if($producto = $em->getRepository('AdminBundle:Producto')->findOneBy(array('proIdPk' => $id)))
+            {
+                $producto->setProCodigo($codigo);
+                $producto->setProProducto($nombre_producto);
+                $producto->setProCantidad($cantidad);
+                $producto->setProPrecioReal($precioreal);
+                $em->persist($producto);
+                $em->flush();
+
+                $result = true;
+            }
+
+        }
+
+        echo json_encode(array('result' => $result));
+        exit;
+    }
+
+    public function eliminarProductoAction($id)
+    {
+        if($id != 0)
+        {
+            $em = $this->getDoctrine()->getManager();
+            if($producto = $em->getRepository('AdminBundle:Producto')->findOneBy(array('proIdPk' => $id)))
+            {
+                $producto->setProActivo(0);
+                $em->persist($producto);
+                $em->flush();
+            }
+
+        }
+        return $this->redirectToRoute('admin_catalogo', array('id' => $producto->getProTipoFk()->getPrtCategoriaFk()->getCatIdPk() ));
     }
 
     private function subirImagen($foto)

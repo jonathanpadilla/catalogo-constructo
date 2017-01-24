@@ -1,0 +1,67 @@
+@media print {
+    .linea1{
+        background-color: #002779 !important;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .linea2{
+        background-color: #002779 !important;
+        -webkit-print-color-adjust: exact;
+        color: #ffde00 !important;
+    }
+
+    .hidden-print{
+        display: none;
+    }
+
+    .width-80{
+        width: 50px !important;
+    }
+
+    .tabla_producto_body table tbody tr td{
+        padding-top: 0 !important;
+        padding-left: 0 !important;
+        font-size: 9px !important;
+        vertical-align: top;
+    }
+
+    .tabla_producto_body table thead{
+        background-color: #002779 !important;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .tabla_producto_body table thead tr th{
+        padding: 3px 0 3px 5px !important;
+        color: #fff !important;
+        font-size: 9px !important;
+    }
+
+    .tabla_producto_body table tbody tr td{
+        padding: 3px 0 3px 5px !important;
+    }
+
+    .tabla_producto_body table tbody tr{
+        border-bottom: 1px solid #d8d8d8 !important;
+    }
+
+    .tph_nombre{
+        font-weight: 800;
+        line-height: 1em;
+        color: #002779 !important;
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+
+    .tph_nombre span{
+        font-weight: 400;
+    }
+
+    .tabla_producto_head{
+        min-height: 40px;
+    }
+
+    .pagina{
+        display:block;
+        page-break-after:auto;
+    }
+}

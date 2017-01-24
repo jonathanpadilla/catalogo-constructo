@@ -14,6 +14,10 @@ admin_catalogo_tabla_guardar:
     path:     /catalogo/tabla/guardar/
     defaults: { _controller: AdminBundle:Catalogo:guardarTabla }
 
+admin_catalogo_tabla_eliminar:
+    path:     /catalogo/tabla/eliminar/{id}
+    defaults: { _controller: AdminBundle:Catalogo:eliminarTabla, id: 0 }
+
 admin_catalogo_producto_guardar:
     path:     /catalogo/producto/guardar/
     defaults: { _controller: AdminBundle:Catalogo:guardarProducto }
@@ -23,3 +27,17 @@ admin_catalogo_categoria_eliminar:
     defaults: { _controller: AdminBundle:Catalogo:eliminarCategoria }
     options:
         expose: true
+
+admin_catalogo_producto_editar:
+    path:     /catalogo/producto/editar/
+    defaults: { _controller: AdminBundle:Catalogo:editarProducto }
+    options:
+        expose: true
+
+admin_catalogo_producto_eliminar:
+    path:     /catalogo/producto/eliminar/{id}
+    defaults: { _controller: AdminBundle:Catalogo:eliminarProducto, id: 0 }
+
+admin_catalogo_pagina_imprimir:
+    path:     /catalogo/pagina/imprimir/{id}
+    defaults: { _controller: AdminBundle:Pdf:imprimirPaginaCatalogo, id: 0 }

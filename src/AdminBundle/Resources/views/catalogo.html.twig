@@ -1,5 +1,9 @@
 {% extends "AdminBundle:layouts:body.html.twig" %}
 
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('assets/skin/default_skin/css/print.css')) }}" media="print">
+{% endblock %}
+
 {% block content %}
 
 <!-- cargar lista de categorias -->
@@ -42,6 +46,8 @@
 	<div class="row">
 		<div class="col-md-12">
 			<a id="btn_agregar_tabla" data-categoria="{{ id_categoria }}" href="#" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar tabla</a>
+			<a href="#" id="btn_imprimir" class="btn btn-primary">Imprimir</a>
+			<a href="{{ url('admin_catalogo_pagina_imprimir', {'id': id_categoria}) }}" class="btn btn-primary">PDF</a>
 		</div>
 	</div>
 {% endif %}
@@ -156,6 +162,7 @@
 
 {% block javascripts %}
 	<script src="{{ absolute_url(asset('vendor/plugins/validate/jquery.validate.js')) }}"></script>
+	<script src="{{ absolute_url(asset('vendor/plugins/printThis-master/printThis.js')) }}"></script>
 	<script src="{{ absolute_url(asset('assets/js/catalogo_constructor.js')) }}"></script>
 	<script src="{{ absolute_url(asset('assets/js/productos.js')) }}"></script>
 {% endblock %}

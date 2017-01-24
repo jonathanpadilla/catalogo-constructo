@@ -71,8 +71,8 @@ fos_user:
     firewall_name: main
     user_class: AdminBundle\Entity\User
 
-# knp_snappy:
-#     pdf:
-#         enabled:    true
-#         binary:     '\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"'
-#         options:    []
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\""
+        options:    []

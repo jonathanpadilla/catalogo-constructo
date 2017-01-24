@@ -1,77 +1,88 @@
 <div class="row">
 	<div class="col-md-12">
-		<div class="panel">
+		<div class="panel" id="print_area">
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-12">
 						<img src="{{ absolute_url(asset('assets/img/logos/catalogo-logo.png')) }}" alt="">
 						<div class="linea1"></div>
-						<div class="linea2">Texto</div>
+						<div class="linea2" style="background-color:#002779;">{{ lista_productos.0.catalogo_nombre }}</div>
 					</div>
 				</div>
 				
 				{% set row = 0 %}
 				{% for tabla in lista_productos %}
 				{% if row == 0 %}
-				<div class="row">
+				<div class="row pagina">
 				{% endif %}
-					<div class="col-sm-6">
+					<div class="col-xs-6">
 						<div class="tabla_producto">
 							<div class="tabla_producto_head">
 								<h3 class="tph_nombre">{{ tabla.nombre }} <br> <span>{{ tabla.subtext }}</span></h3>
+								<div>
+								</div>
 							</div>
 							<div class="tabla_producto_body">
 								<table>
 									<thead>
 										<tr>
-											<th>Codigo</th>
-											<th>Producto</th>
-											<th>Cantidad</th>
-											<th>Precio</th>
-											<th></th>
+											<th id="th_codigo_{{ tabla.id }}" class="width-64">Código</th>
+											<th id="th_producto_{{ tabla.id }}">Producto</th>
+											<th id="th_cantidad_{{ tabla.id }}" class="width-60">Cantidad</th>
+											<th id="th_precio_{{ tabla.id }}" class="width-60">Precio</th>
+											<th id="th_precioventa_{{ tabla.id }}" class="width-60">Precio venta</th>
+											<th class="hidden-print botones-tabla">
+												<a href="#" data-id="{{ tabla.id }}" data-toggle="tooltip" data-placement="top" title="Renombrar cabecera" class="btn_editar_cabecera"><i class="fa fa-pencil"></i></a>
+												<a href="#" data-id="1" data-toggle="tooltip" data-placement="top" title="Editar información"><i class="fa fa-edit"></i></a>
+												<a href="{{ url('admin_catalogo_tabla_eliminar', {'id': tabla.id}) }}" data-toggle="tooltip" data-placement="top" title="Eliminar tabla" class="btn_eliminar_tabla"><i class="fa fa-trash"></i></a>
+											</th>
 										</tr>
 									</thead>
 									<tbody>
 										{% for producto in tabla.productos %}
-										<tr>
-											<td>{{ producto.codigo }}</td>
-											<td>{{ producto.producto }}</td>
-											<td>{{ producto.cantidad }}</td>
-											<td>${{ producto.precioReal|number_format(0, ',', '.') }}</td>
-											<td class="opciones">
+										<tr class="{{ producto.activo == 0 ? 'hidden-print producto-deshabilitado' }}">
+											<td id="td_codigo_{{ producto.id }}">{{ producto.codigo }}</td>
+											<td id="td_producto_{{ producto.id }}">{{ producto.producto }}</td>
+											<td id="td_cantidad_{{ producto.id }}">{{ producto.cantidad }}</td>
+											<td id="td_precioreal_{{ producto.id }}">${{ producto.precioReal|number_format(0, ',', '.') }}</td>
+											<td id="td_precioventa_{{ producto.id }}">$0</td>
+											<td class="opciones hidden-print">
 												<div class="btn-group">
-													<button type="button" class="btn btn-default btn-sm">
+													<button type="button" class="btn btn-default btn-sm btn_editar_producto" data-id="{{ producto.id }}" data-estado="td">
 													    <i class="fa fa-edit"></i>
 													</button>
-													<button type="button" class="btn btn-default btn-sm">
-													    <i class="fa fa-trash"></i>
-													</button>
+													<a href="{{ url('admin_catalogo_producto_eliminar', {'id': producto.id}) }}" type="button" class="btn btn-default btn-sm btn_eliminar_producto">
+													    <i class="fa fa-eye-slash"></i>
+													</a>
 												</div>
 											</td>
 										</tr>
 										{% endfor %}
 									</tbody>
 								</table>
-								<form action="{{ url('admin_catalogo_producto_guardar') }}" method="post" class="form_agregar_producto">
+								<form action="{{ url('admin_catalogo_producto_guardar') }}" method="post" class="form_agregar_producto hidden-print">
 									<input type="hidden" name="tabla" value="{{ tabla.id }}">
 									<table class="table_form">
 										<tfoot>
-												<tr>
-													<td><input type="text" class="form-control" name="codigo" id="codigo" placeholder="Codigo"></td>
-													<td><input type="text" class="form-control" name="producto" id="producto" placeholder="Producto"></td>
-													<td><input type="text" class="form-control" name="cantidad" id="cantidad" placeholder="Cantidad"></td>
-													<td><input type="number" class="form-control" name="precio" id="precio" placeholder="Precio"></td>
-													<td><button type="submit" class="btn btn-primary btn_agregar_producto" style="width:100%;"><i class="fa fa-save"></i></button></td>
-												</tr>
+											<tr>
+												<td width="80px"><input type="text" class="form-control" name="codigo" id="codigo" placeholder="Codigo"></td>
+												<td><input type="text" class="form-control" name="producto" id="producto" placeholder="Producto"></td>
+												<td width="80px"><input type="text" class="form-control" name="cantidad" id="cantidad" placeholder="Cantidad"></td>
+												<td width="100px"><input type="number" class="form-control" name="precio" id="precio" placeholder="Precio"></td>
+												<td width="100px"><input type="number" class="form-control" name="precioventa" id="precioventa" placeholder="Precio de venta"></td>
+												<td style="width: 65px;padding:0;"><button type="submit" class="btn btn-primary btn_agregar_producto" style="width:100%;"><i class="fa fa-save"></i></button></td>
+											</tr>
 										</tfoot>
 									</table>
 								</form>
 							</div>
+							{% if tabla.imagen %}
 							<div class="tabla_producto_footer">
 								<div class="tpf_img">
 									<img src="{{ absolute_url(asset('uploads/img/'~tabla.imagen)) }}" alt="">
 								</div>
 							</div>
+							{% endif %}
 						</div>
 					</div>
 
