@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ProductoTipo
  *
- * @ORM\Table(name="producto_tipo", indexes={@ORM\Index(name="prt_categoria_fk", columns={"prt_categoria_fk"})})
+ * @ORM\Table(name="producto_tipo", indexes={@ORM\Index(name="prt_categoria_fk", columns={"prt_categoria_fk"}), @ORM\Index(name="prt_hoja_fk", columns={"prt_hoja_fk"})})
  * @ORM\Entity
  */
 class ProductoTipo
@@ -65,6 +65,16 @@ class ProductoTipo
      * })
      */
     private $prtCategoriaFk;
+
+    /**
+     * @var \Hoja
+     *
+     * @ORM\ManyToOne(targetEntity="Hoja")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="prt_hoja_fk", referencedColumnName="hoj_id_pk")
+     * })
+     */
+    private $prtHojaFk;
 
 
 
@@ -214,5 +224,28 @@ class ProductoTipo
     public function getPrtCategoriaFk()
     {
         return $this->prtCategoriaFk;
+    }
+
+    /**
+     * Set prtHojaFk
+     *
+     * @param \AdminBundle\Entity\Hoja $prtHojaFk
+     * @return ProductoTipo
+     */
+    public function setPrtHojaFk(\AdminBundle\Entity\Hoja $prtHojaFk = null)
+    {
+        $this->prtHojaFk = $prtHojaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get prtHojaFk
+     *
+     * @return \AdminBundle\Entity\Hoja 
+     */
+    public function getPrtHojaFk()
+    {
+        return $this->prtHojaFk;
     }
 }

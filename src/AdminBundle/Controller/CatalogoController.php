@@ -36,14 +36,14 @@ class CatalogoController extends Controller
             $lista_productos = false;
     	}
 
+    	// echo '<pre>';print_r($lista_productos);exit;
         if($lista_productos)
         {
-            $vista_productos = $this->renderView('AdminBundle::productos.html.twig', array('lista_productos' => $lista_productos));
+            $vista_productos = $this->renderView('AdminBundle::productos.html.twig', array('lista_hojas' => $lista_productos));
         }else{
             $vista_productos = false;
         }
 
-    	// echo '<pre>';print_r($lista_productos);exit;
         return $this->render('AdminBundle::catalogo.html.twig', array(
         	'default_data' 			=> $parameters->getAll(),
         	'menu_categorias' 		=> $menu_categoria,
@@ -267,48 +267,61 @@ class CatalogoController extends Controller
         if($id)
         {
             $em = $this->getDoctrine()->getManager();
-
-            if($producto_tipo = $em->getRepository('AdminBundle:ProductoTipo')->findBy(array('prtCategoriaFk' => $id, 'prtActivo' => 1 )))
+            if($rs_hoja = $em->getRepository('AdminBundle:Hoja')->findBy(array('hojCategoriaFk' => $id )))
             {
-                $lista = array();
-                foreach($producto_tipo as $value)
+                $hoja = array();
+                foreach($rs_hoja as $value_hoja)
                 {
-                    $datos = new stdClass();
+                    $datos_hojas = new stdClass();
 
-                    $datos->id              = $value->getPrtIdPk();
-                    $datos->nombre          = $value->getPrtNombre();
-                    $datos->subtext         = $value->getPrtSubtexto();
-                    $datos->imagen          = $value->getPrtImagen();
-                    $datos->catalogo        = $value->getPrtCategoriaFk()->getCatIdPk();
-                    $datos->catalogo_nombre = $value->getPrtCategoriaFk()->getCatNombre();
-                    $datos->productos       = array();
+                    $datos_hojas->id      = $value_hoja->getHojIdPk();
+                    $datos_hojas->numero  = $value_hoja->getHojNumero();
+                    $datos_hojas->tablas  = array();
 
-                    if($producto = $em->getRepository('AdminBundle:Producto')->findBy(array('proTipoFk' => $datos->id )))
+                    if($tablas = $em->getRepository('AdminBundle:ProductoTipo')->findBy(array('prtCategoriaFk' => $id, 'prtActivo' => 1, 'prtHojaFk' => $value_hoja->getHojIdPk() )))
                     {
-                        foreach($producto as $value2)
+                        foreach($tablas as $value_tabla)
                         {
-                            $datos2 = new stdClass();
+                            $datos_tabla = new stdClass();
 
-                            $datos2->id             = $value2->getProIdPk();
-                            $datos2->codigo         = $value2->getProCodigo();
-                            $datos2->codigo_factura = $value2->getProCodigoFactusol();
-                            $datos2->producto       = $value2->getProProducto();
-                            $datos2->cantidad       = $value2->getProCantidad();
-                            $datos2->precioReal     = $value2->getProPrecioReal();
-                            $datos2->precioVenta    = $value2->getProPrecioVentas();
-                            $datos2->activo         = $value2->getProActivo();
+                            $datos_tabla->id                = $value_tabla->getPrtIdPk();
+                            $datos_tabla->nombre            = $value_tabla->getPrtNombre();
+                            $datos_tabla->subtext           = $value_tabla->getPrtSubtexto();
+                            $datos_tabla->imagen            = $value_tabla->getPrtImagen();
+                            $datos_tabla->catalogo          = $value_tabla->getPrtCategoriaFk()->getCatIdPk();
+                            $datos_tabla->catalogo_nombre   = $value_tabla->getPrtCategoriaFk()->getCatNombre();
+                            $datos_tabla->productos         = array();
 
-                            $datos->productos[] = $datos2;
+                            if($producto = $em->getRepository('AdminBundle:Producto')->findBy(array('proTipoFk' => $value_tabla->getPrtIdPk() )))
+                            {
+                                foreach($producto as $value_producto)
+                                {
+                                    $datos_producto = new stdClass();
+
+                                    $datos_producto->id             = $value_producto->getProIdPk();
+                                    $datos_producto->codigo         = $value_producto->getProCodigo();
+                                    $datos_producto->codigo_factura = $value_producto->getProCodigoFactusol();
+                                    $datos_producto->producto       = $value_producto->getProProducto();
+                                    $datos_producto->cantidad       = $value_producto->getProCantidad();
+                                    $datos_producto->precioReal     = $value_producto->getProPrecioReal();
+                                    $datos_producto->precioVenta    = $value_producto->getProPrecioVentas();
+                                    $datos_producto->activo         = $value_producto->getProActivo();
+
+                                    $datos_tabla->productos[] = $datos_producto;
+                                }
+                            }
+
+                            $datos_hojas->tablas[] = $datos_tabla;
                         }
                     }
 
-                    $lista[] = $datos;
-
+                    $hoja[] = $datos_hojas;
                 }
 
-                $result = $lista;
-
+                $result = $hoja;
             }
+
+
         }
 
         return $result;

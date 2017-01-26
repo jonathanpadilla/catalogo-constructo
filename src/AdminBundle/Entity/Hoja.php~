@@ -1,0 +1,42 @@
+<?php
+
+namespace AdminBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Hoja
+ *
+ * @ORM\Table(name="hoja", indexes={@ORM\Index(name="hoj_categoria_fk", columns={"hoj_categoria_fk"})})
+ * @ORM\Entity
+ */
+class Hoja
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="hoj_id_pk", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $hojIdPk;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="hoj_numero", type="integer", nullable=true)
+     */
+    private $hojNumero;
+
+    /**
+     * @var \Categoria
+     *
+     * @ORM\ManyToOne(targetEntity="Categoria")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="hoj_categoria_fk", referencedColumnName="cat_id_pk")
+     * })
+     */
+    private $hojCategoriaFk;
+
+
+}
