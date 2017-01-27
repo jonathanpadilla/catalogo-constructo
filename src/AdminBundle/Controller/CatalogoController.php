@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AdminBundle\Entity\Categoria;
 use AdminBundle\Entity\ProductoTipo;
 use AdminBundle\Entity\Producto;
+use AdminBundle\Entity\Hoja;
 use \stdClass;
 
 class CatalogoController extends Controller
@@ -114,6 +115,7 @@ class CatalogoController extends Controller
         if( $request->getMethod() == 'POST' )
         {
             $id_categoria   = $request->get('id_categoria');
+            $id_tabla       = $request->get('id_tabla');
             $nombre         = ucfirst($request->get('nombre'));
             $subtexto       = ucfirst($request->get('subtexto'));
             $imagen         = $request->files->get('imagen', null);
@@ -124,13 +126,30 @@ class CatalogoController extends Controller
 
             $fk_categoria = $em->getRepository('AdminBundle:Categoria')->findOneBy(array('catIdPk' => $id_categoria));
 
-            $tabla = new ProductoTipo();
+            // crear hoja
+            if(!$hoja = $em->getRepository('AdminBundle:Hoja')->findOneBy(array('hojCategoriaFk' => $id_categoria)))
+            {
+                $hoja = new Hoja();
+                $hoja->setHojNumero(1);
+                $hoja->setHojCategoriaFk($fk_categoria);
+                $em->persist($hoja);
+                $em->flush();
+            }
+
+            // guardar tabla
+            if(!$tabla = $em->getRepository('AdminBundle:ProductoTipo')->findOneBy(array('prtIdPk' => $id_tabla)))
+            {
+                $tabla = new ProductoTipo();
+                $tabla->setPrtActivo(1);
+                $tabla->setPrtFechaRegistro(new \DateTime(date("Y-m-d H:i:s")));
+                $tabla->setPrtCategoriaFk($fk_categoria);
+                $tabla->setPrtHojaFk($hoja);
+
+            }
+
             $tabla->setPrtNombre($nombre);
             $tabla->setPrtSubtexto($subtexto);
             $tabla->setPrtImagen($dir_image);
-            $tabla->setPrtActivo(1);
-            $tabla->setPrtFechaRegistro(new \DateTime(date("Y-m-d H:i:s")));
-            $tabla->setPrtCategoriaFk($fk_categoria);
             $em->persist($tabla);
             $em->flush();
 
@@ -168,6 +187,7 @@ class CatalogoController extends Controller
                         $qb->expr()->eq('c.catActivo', 1)
                     )
             	)
+            ->orderBy("c.catNombre", 'ASC')
             ->getQuery();
 
         if($resultQuery = $q->getResult())
@@ -278,7 +298,7 @@ class CatalogoController extends Controller
                     $datos_hojas->numero  = $value_hoja->getHojNumero();
                     $datos_hojas->tablas  = array();
 
-                    if($tablas = $em->getRepository('AdminBundle:ProductoTipo')->findBy(array('prtCategoriaFk' => $id, 'prtActivo' => 1, 'prtHojaFk' => $value_hoja->getHojIdPk() )))
+                    if($tablas = $em->getRepository('AdminBundle:ProductoTipo')->findBy(array('prtCategoriaFk' => $id, 'prtActivo' => 1, 'prtHojaFk' => $value_hoja->getHojIdPk() ), array('prtNombre' => 'ASC')))
                     {
                         foreach($tablas as $value_tabla)
                         {
@@ -292,7 +312,7 @@ class CatalogoController extends Controller
                             $datos_tabla->catalogo_nombre   = $value_tabla->getPrtCategoriaFk()->getCatNombre();
                             $datos_tabla->productos         = array();
 
-                            if($producto = $em->getRepository('AdminBundle:Producto')->findBy(array('proTipoFk' => $value_tabla->getPrtIdPk() )))
+                            if($producto = $em->getRepository('AdminBundle:Producto')->findBy(array('proTipoFk' => $value_tabla->getPrtIdPk() ), array('proProducto' => 'ASC')))
                             {
                                 foreach($producto as $value_producto)
                                 {
@@ -306,6 +326,7 @@ class CatalogoController extends Controller
                                     $datos_producto->precioReal     = $value_producto->getProPrecioReal();
                                     $datos_producto->precioVenta    = $value_producto->getProPrecioVentas();
                                     $datos_producto->activo         = $value_producto->getProActivo();
+                                    $datos_producto->slug           = $this->gen_slug($value_producto->getProIdPk().'_'.$value_producto->getProCodigo().'_'.$value_producto->getProProducto());
 
                                     $datos_tabla->productos[] = $datos_producto;
                                 }
@@ -336,6 +357,7 @@ class CatalogoController extends Controller
             $nombre_producto    = ucfirst($request->get('producto'));
             $cantidad           = $request->get('cantidad');
             $precio             = $request->get('precio');
+            $precioventa        = $request->get('precioventa');
 
             $em = $this->getDoctrine()->getManager();
 
@@ -346,6 +368,7 @@ class CatalogoController extends Controller
             $producto->setProProducto($nombre_producto);
             $producto->setProCantidad($cantidad);
             $producto->setProPrecioReal($precio);
+            $producto->setProPrecioVentas($precioventa);
             $producto->setProActivo(1);
             $producto->setProFechaRegistro(new \DateTime(date("Y-m-d H:i:s")));
             $producto->setProTipoFk($fk_tabla);
@@ -355,6 +378,39 @@ class CatalogoController extends Controller
         }
 
         return $this->redirectToRoute('admin_catalogo', array('id' => $fk_tabla->getPrtCategoriaFk()->getCatIdPk() ));
+    }
+
+    public function cambiarHojaProductoAction(Request $request)
+    {
+        $result = false;
+        if( $request->getMethod() == 'POST' )
+        {
+            $em = $this->getDoctrine()->getManager();
+            $id     = $request->get('id');
+            $numero = $request->get('hoja');
+
+            if($tabla = $em->getRepository('AdminBundle:ProductoTipo')->findOneBy(array('prtIdPk' => $id)))
+            {
+                if(!$hoja = $em->getRepository('AdminBundle:Hoja')->findOneBy(array('hojCategoriaFk' => $tabla->getPrtCategoriaFk(), 'hojNumero' => $numero)))
+                {
+                    $hoja = new Hoja();
+                    $hoja->setHojNumero($numero);
+                    $hoja->setHojCategoriaFk($tabla->getPrtCategoriaFk());
+                    $em->persist($hoja);
+                    $em->flush();
+                }
+
+                $tabla->setPrtHojaFk($hoja);
+                $em->persist($tabla);
+                $em->flush();
+
+                $result = true;
+            }
+
+        }
+
+        echo json_encode(array('result' => $result));
+        exit;
     }
 
     public function editarProductoAction(Request $request)
@@ -367,6 +423,7 @@ class CatalogoController extends Controller
             $nombre_producto    = ucfirst($request->get('producto'));
             $cantidad           = $request->get('cantidad');
             $precioreal         = $request->get('precioreal');
+            $precioventa        = $request->get('precioventa');
 
             $em = $this->getDoctrine()->getManager();
 
@@ -376,6 +433,7 @@ class CatalogoController extends Controller
                 $producto->setProProducto($nombre_producto);
                 $producto->setProCantidad($cantidad);
                 $producto->setProPrecioReal($precioreal);
+                $producto->setProPrecioVentas($precioventa);
                 $em->persist($producto);
                 $em->flush();
 
@@ -388,19 +446,18 @@ class CatalogoController extends Controller
         exit;
     }
 
-    public function eliminarProductoAction($id)
+    public function eliminarProductoAction($id, $activo)
     {
-        if($id != 0)
-        {
-            $em = $this->getDoctrine()->getManager();
-            if($producto = $em->getRepository('AdminBundle:Producto')->findOneBy(array('proIdPk' => $id)))
-            {
-                $producto->setProActivo(0);
-                $em->persist($producto);
-                $em->flush();
-            }
 
+        $em = $this->getDoctrine()->getManager();
+        if($producto = $em->getRepository('AdminBundle:Producto')->findOneBy(array('proIdPk' => $id)))
+        {
+            $producto->setProActivo(0);
+            $producto->setProActivo(($activo == 1)?0:1);
+            $em->persist($producto);
+            $em->flush();
         }
+
         return $this->redirectToRoute('admin_catalogo', array('id' => $producto->getProTipoFk()->getPrtCategoriaFk()->getCatIdPk() ));
     }
 
@@ -424,5 +481,12 @@ class CatalogoController extends Controller
             }
         }
         return $result;
+    }
+
+    function gen_slug($str){
+        # special accents
+        $a = array('À','Á','Â','Ã','Ä','Å','Æ','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ñ','Ò','Ó','Ô','Õ','Ö','Ø','Ù','Ú','Û','Ü','Ý','ß','à','á','â','ã','ä','å','æ','ç','è','é','ê','ë','ì','í','î','ï','ñ','ò','ó','ô','õ','ö','ø','ù','ú','û','ü','ý','ÿ','A','a','A','a','A','a','C','c','C','c','C','c','C','c','D','d','Ð','d','E','e','E','e','E','e','E','e','E','e','G','g','G','g','G','g','G','g','H','h','H','h','I','i','I','i','I','i','I','i','I','i','?','?','J','j','K','k','L','l','L','l','L','l','?','?','L','l','N','n','N','n','N','n','?','O','o','O','o','O','o','Œ','œ','R','r','R','r','R','r','S','s','S','s','S','s','Š','š','T','t','T','t','T','t','U','u','U','u','U','u','U','u','U','u','U','u','W','w','Y','y','Ÿ','Z','z','Z','z','Ž','ž','?','ƒ','O','o','U','u','A','a','I','i','O','o','U','u','U','u','U','u','U','u','U','u','?','?','?','?','?','?');
+        $b = array('A','A','A','A','A','A','AE','C','E','E','E','E','I','I','I','I','D','N','O','O','O','O','O','O','U','U','U','U','Y','s','a','a','a','a','a','a','ae','c','e','e','e','e','i','i','i','i','n','o','o','o','o','o','o','u','u','u','u','y','y','A','a','A','a','A','a','C','c','C','c','C','c','C','c','D','d','D','d','E','e','E','e','E','e','E','e','E','e','G','g','G','g','G','g','G','g','H','h','H','h','I','i','I','i','I','i','I','i','I','i','IJ','ij','J','j','K','k','L','l','L','l','L','l','L','l','l','l','N','n','N','n','N','n','n','O','o','O','o','O','o','OE','oe','R','r','R','r','R','r','S','s','S','s','S','s','S','s','T','t','T','t','T','t','U','u','U','u','U','u','U','u','U','u','U','u','W','w','Y','y','Y','Z','z','Z','z','Z','z','s','f','O','o','U','u','A','a','I','i','O','o','U','u','U','u','U','u','U','u','U','u','A','a','AE','ae','O','o');
+        return strtolower(preg_replace(array('/[^a-zA-Z0-9 -]/','/[ -]+/','/^-|-$/'),array('','_',''),str_replace($a,$b,$str)));
     }
 }

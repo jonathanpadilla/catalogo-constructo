@@ -47,7 +47,7 @@
 		<div class="col-md-12">
 			<a id="btn_agregar_tabla" data-categoria="{{ id_categoria }}" href="#" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar tabla</a>
 			<a href="#" id="btn_imprimir" class="btn btn-primary">Imprimir</a>
-			<a href="{{ url('admin_catalogo_pagina_imprimir', {'id': id_categoria}) }}" class="btn btn-primary">PDF</a>
+			<!-- <a href="{{ url('admin_catalogo_pagina_imprimir', {'id': id_categoria}) }}" class="btn btn-primary">PDF</a> -->
 		</div>
 	</div>
 {% endif %}
@@ -128,6 +128,7 @@
 					<div class="col-md-12">
 						<form id="form_agregar_tabla" action="{{ url('admin_catalogo_tabla_guardar') }}" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
 							<input type="hidden" name="id_categoria" id="id_categoria">
+							<input type="hidden" name="id_tabla" id="id_tabla">
 							<div class="form-group">
 			                    <label for="nombre" class="col-lg-3 control-label text-right">Nombre</label>
 			                    <div class="col-lg-8">

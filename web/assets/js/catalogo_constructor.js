@@ -10,6 +10,7 @@ var form_agregar_categoria      = $("#form_agregar_categoria");
 var form_agregar_tabla          = $("#form_agregar_tabla");
 var submit_agregar_tabla        = $("#submit_agregar_tabla");
 var submit_agregar_categoria    = $("#submit_agregar_categoria");
+var btn_editar_tabla            = $(".btn_editar_tabla");
 
 $(function(){
 
@@ -99,6 +100,26 @@ $(function(){
         form_agregar_tabla[0].reset();
         modal_nueva_tabla.find('#id_categoria').val(categoria);
         modal_nueva_tabla.modal('show');
+    });
+
+    btn_editar_tabla.on('click', function(e){
+        e.preventDefault();
+
+        var btn         = $(this);
+        var id          = btn.data('id');
+        var categoria   = btn_agregar_tabla.data('categoria');
+        var nombre      = btn.data('nombre');
+        var subtext     = btn.data('subtext');
+
+        form_agregar_tabla[0].reset();
+
+        $("#form_agregar_tabla").find("#id_categoria").val(categoria);
+        $("#form_agregar_tabla").find("#id_tabla").val(id);
+        $("#form_agregar_tabla").find("#nombre").val(nombre);
+        $("#form_agregar_tabla").find("#subtexto").val(subtext);
+
+        modal_nueva_tabla.modal('show');
+
     });
 
     submit_agregar_tabla.on('click', function(e){

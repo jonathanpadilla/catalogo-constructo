@@ -5,6 +5,7 @@ var btn_eliminar_producto   = $(".btn_eliminar_producto");
 var btn_imprimir            = $("#btn_imprimir");
 var btn_eliminar_tabla      = $(".btn_eliminar_tabla");
 var btn_editar_cabecera     = $(".btn_editar_cabecera");
+var txt_hoja                = $(".txt_hoja");
 
 $(function(){
 
@@ -118,7 +119,8 @@ $(function(){
 		var td_codigo 		= $("#td_codigo_"+id);
 		var td_producto 	= $("#td_producto_"+id);
 		var td_cantidad 	= $("#td_cantidad_"+id);
-		var td_precioreal 	= $("#td_precioreal_"+id);
+        var td_precioreal   = $("#td_precioreal_"+id);
+		var td_precioventa 	= $("#td_precioventa_"+id);
 
         if(estado == 'td')
         {
@@ -128,6 +130,7 @@ $(function(){
             addInput(td_producto, 'producto', id);
             addInput(td_cantidad, 'cantidad', id);
             addInput(td_precioreal, 'precioreal', id);
+            addInput(td_precioventa, 'precioventa', id);
 
             btn.removeClass('btn-default');
             btn.addClass('btn-warning');
@@ -142,6 +145,7 @@ $(function(){
             $("#input_producto_"+id).attr('disabled', 'disabled');
             $("#input_cantidad_"+id).attr('disabled', 'disabled');
             $("#input_precioreal_"+id).attr('disabled', 'disabled');
+            $("#input_precioventa_"+id).attr('disabled', 'disabled');
 
             var datos = {
                 'id':           id,
@@ -149,6 +153,7 @@ $(function(){
                 'producto':     $("#input_producto_"+id).val(),
                 'cantidad':     $("#input_cantidad_"+id).val(),
                 'precioreal':   $("#input_precioreal_"+id).val(),
+                'precioventa':  $("#input_precioventa_"+id).val(),
             };
 
             $.ajax({
@@ -165,6 +170,9 @@ $(function(){
                     var n_precioreal = $("#input_precioreal_"+id).val();
                     td_precioreal.html('$'+formatMoney(n_precioreal, 0, ',', '.'));
 
+                    var n_precioventa = $("#input_precioventa_"+id).val();
+                    td_precioventa.html('$'+formatMoney(n_precioventa, 0, ',', '.'));
+
                     btn.removeClass('btn-warning');
                     btn.addClass('btn-default');
                     btn.html('<i class="fa fa-edit"></i>');
@@ -174,6 +182,33 @@ $(function(){
         }
 
 	});
+
+    txt_hoja.keypress(function(e) {
+        if(e.which == 13) {
+            var txt = $(this).val();
+            var tabla = $(this).data('id');
+
+            $.ajax({
+                url: Routing.generate('admin_catalogo_producto_cambiarhoja'),
+                data: {id:tabla, hoja:txt},
+                method: 'post',
+                dataType: 'json'
+            }).done(function(json){
+                if(json.result)
+                {
+                    location.reload(true);
+                }
+            });
+        }
+    });
+
+    if(window.location.hash){
+        $(window.location.hash).css('background-color', '#d1f1d1');
+        var prod = $(window.location.hash).offset().top;
+        prod = prod -200;
+        $("html, body").animate({ scrollTop: prod+"px" }, "slow");
+    }
+
 
     // btn_eliminar_producto.on('click', function(e){
 
@@ -190,7 +225,7 @@ $(function(){
 	{
 		var texto = td.text();
         var type = 'text';
-        if(name == 'precioreal')
+        if(name == 'precioreal' || name == 'precioventa')
         {
             texto = texto.replace('$', '');
             texto = texto.replace('.', '');

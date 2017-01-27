@@ -34,9 +34,15 @@ admin_catalogo_producto_editar:
     options:
         expose: true
 
+admin_catalogo_producto_cambiarhoja:
+    path:     /catalogo/producto/cambiarhoja/
+    defaults: { _controller: AdminBundle:Catalogo:cambiarHojaProducto }
+    options:
+        expose: true
+
 admin_catalogo_producto_eliminar:
-    path:     /catalogo/producto/eliminar/{id}
-    defaults: { _controller: AdminBundle:Catalogo:eliminarProducto, id: 0 }
+    path:     /catalogo/producto/eliminar/{id}/{activo}
+    defaults: { _controller: AdminBundle:Catalogo:eliminarProducto }
 
 admin_catalogo_pagina_imprimir:
     path:     /catalogo/pagina/imprimir/{id}
