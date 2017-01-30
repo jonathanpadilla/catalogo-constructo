@@ -1,22 +1,23 @@
 {% trans_default_domain 'FOSUserBundle' %}
-
-{% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-{% endif %}
-
-<form action="{{ path("fos_user_security_check") }}" method="post">
+<form class="form-4" action="{{ path("fos_user_security_check") }}" method="post" id="form_login">
     {% if csrf_token %}
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     {% endif %}
+    <div class="img-svg"><img src="{{ absolute_url(asset('assets/img/logo-simple.svg')) }}" alt=""></div>
+    <h1>Catalogo</h1>
+    {% if error %}
+        <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    <p>
+        <label for="login">Nombre de usuario</label>
+        <input type="text" name="_username" placeholder="Nombre de usuario" value="{{ last_username }}">
+    </p>
+    <p>
+        <label for="password">Contraseña</label>
+        <input type="password" name='_password' placeholder="Contraseña" required> 
+    </p>
 
-    <label for="username">{{ 'security.login.username'|trans }}</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-
-    <label for="password">{{ 'security.login.password'|trans }}</label>
-    <input type="password" id="password" name="_password" required="required" />
-
-    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
-
-    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+    <p>
+        <input type="submit" name="_submit" value="Entrar" id="btn_login">
+    </p>
 </form>

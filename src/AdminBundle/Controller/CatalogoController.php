@@ -173,6 +173,38 @@ class CatalogoController extends Controller
         return $this->redirectToRoute('admin_catalogo', array('id' => $tabla->getPrtCategoriaFk()->getCatIdPk() ));
     }
 
+    public function buscarProductoAction(Request $request)
+    {
+        if($request->getMethod() == 'GET')
+        {
+            $buscar = $request->get('buscar', false);
+
+            $em = $this->getDoctrine()->getManager();
+            $qb = $em->createQueryBuilder();
+
+            $q  = $qb->select(array('p'))
+                ->from('AdminBundle:Producto', 'p')
+                ->where($qb->expr()->orX(
+                            $qb->expr()->like('p.proProducto', $qb->expr()->literal('%'.$buscar.'%')),
+                            $qb->expr()->like('p.proCodigo', $qb->expr()->literal('%'.$buscar.'%'))
+                        )
+                    )
+                ->getQuery();
+
+            if($producto = $q->getOneOrNullResult())
+            {
+                $hash = $this->gen_slug($producto->getProIdPk().'_'.$producto->getProCodigo().'_'.$producto->getProProducto());
+                // return $this->redirectToRoute('admin_catalogo', array('id' => $producto->getProTipoFk()->getPrtCategoriaFk()->getCatIdPk(), '\\#' => $hash));
+                $url = $this->generateUrl('admin_catalogo', array('id' => $producto->getProTipoFk()->getPrtCategoriaFk()->getCatIdPk()));
+                return $this->redirect(
+                    sprintf('%s#%s', $url, $hash)
+                );
+            }
+        }
+
+        return $this->redirectToRouter('admin_catalogo');
+    }
+
     private function cargarMenuCategoria($active = false)
     {
     	$em = $this->getDoctrine()->getManager();

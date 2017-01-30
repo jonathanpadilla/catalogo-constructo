@@ -1,5 +1,5 @@
-<form class="navbar-form navbar-left navbar-search square" role="search">
+<form class="navbar-form navbar-left navbar-search square" method="get" action="{{ url('admin_catalogo_buscar') }}">
 	<div class="form-group">
-	  	<input type="text" class="form-control" placeholder="Buscar" value="">
+	  	<input type="text" class="form-control" placeholder="Buscar" name="buscar" value="">
 	</div>
 </form>

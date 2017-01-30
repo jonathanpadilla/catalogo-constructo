@@ -7,3 +7,10 @@ fos_user:
 admin:
     resource: "@AdminBundle/Resources/config/routing.yml"
     prefix:   /admin/
+
+inicio:
+  pattern: /
+  defaults:
+      _controller: FrameworkBundle:Redirect:redirect
+      route: admin_catalogo
+      permanent: true

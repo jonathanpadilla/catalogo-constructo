@@ -47,3 +47,8 @@ admin_catalogo_producto_eliminar:
 admin_catalogo_pagina_imprimir:
     path:     /catalogo/pagina/imprimir/{id}
     defaults: { _controller: AdminBundle:Pdf:imprimirPaginaCatalogo, id: 0 }
+
+admin_catalogo_buscar:
+    path:     /catalogo/buscarproducto/
+    defaults: { _controller: AdminBundle:Catalogo:buscarProducto }
+    methods: [GET]

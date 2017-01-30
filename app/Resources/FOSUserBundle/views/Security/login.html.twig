@@ -1,5 +1,22 @@
-{% extends "@FOSUser/layout.html.twig" %}
+<!doctype html>
+<html class="no-js" lang="es">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Sistema de administracion tuciudad.cl v1.0">
+		<meta name="author" content="tuciudad.cl">
+		<title>Ingreso catalogo</title>
+		<link rel="shortcut icon" href="{{ absolute_url(asset('assets/img/key.png')) }}">
+		<link rel="stylesheet" href="{{ absolute_url(asset('assets/skin/default_skin/css/login.css')) }}">
+		
+	</head>
+	<body>
+		
+		{% block fos_user_content %}
+		    {{ include('@FOSUser/Security/login_content.html.twig') }}
+		{% endblock fos_user_content %}
+		
+	</body>
+</html>
 
-{% block fos_user_content %}
-    {{ include('@FOSUser/Security/login_content.html.twig') }}
-{% endblock fos_user_content %}
