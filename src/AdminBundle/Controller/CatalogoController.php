@@ -191,11 +191,28 @@ class CatalogoController extends Controller
                     )
                 ->getQuery();
 
-            if($producto = $q->getOneOrNullResult())
+            // dump($q->getResult());
+            // exit;
+
+            if($producto = $q->getResult())
             {
-                $hash = $this->gen_slug($producto->getProIdPk().'_'.$producto->getProCodigo().'_'.$producto->getProProducto());
-                // return $this->redirectToRoute('admin_catalogo', array('id' => $producto->getProTipoFk()->getPrtCategoriaFk()->getCatIdPk(), '\\#' => $hash));
-                $url = $this->generateUrl('admin_catalogo', array('id' => $producto->getProTipoFk()->getPrtCategoriaFk()->getCatIdPk()));
+                $encontrado = false;
+                foreach($producto as $value)
+                {
+                    if(!$encontrado)
+                    {
+                        $encontrado = array(
+                            'id' => $value->getProIdPk(),
+                            'codigo' => $value->getProCodigo(),
+                            'producto' => $value->getProProducto(),
+                            'categoria' => $value->getProTipoFk()->getPrtCategoriaFk()->getCatIdPk()
+                        );
+                    }
+                }
+
+
+                $hash = $this->gen_slug($encontrado['id'].'_'.$encontrado['codigo'].'_'.$encontrado['producto']);
+                $url = $this->generateUrl('admin_catalogo', array('id' => $encontrado['categoria'] ));
                 return $this->redirect(
                     sprintf('%s#%s', $url, $hash)
                 );

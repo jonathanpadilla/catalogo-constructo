@@ -1,6 +1,6 @@
 <a href="#" class="dropdown-toggle fw600 p15" data-toggle="dropdown">
 	<img src="{{ absolute_url(asset('assets/img/avatars/placeholder.png')) }}" alt="avatar" class="mw30 br64">
-	<span class="hidden-xs pl15"> Jonathan Padilla </span>
+	<span class="hidden-xs pl15"> {{ app.user.username }} </span>
   <span class="caret caret-tp hidden-xs"></span>
 </a>
 <ul class="dropdown-menu list-group dropdown-persist w250" role="menu">
@@ -41,12 +41,12 @@
     <a href="#" class="animated animated-short fadeInUp">
       <span class="fa fa-bell"></span> Notifications </a>
   </li> -->
-  <li class="list-group-item">
+  <!-- <li class="list-group-item">
     <a href="#" class="animated animated-short fadeInUp">
       <span class="fa fa-gear"></span> Settings </a>
-  </li>
+  </li> -->
   <li class="dropdown-footer">
     <a href="{{ url('fos_user_security_logout') }}" class="">
-    <span class="fa fa-power-off pr5"></span> Logout </a>
+    <span class="fa fa-power-off pr5"></span> Salir </a>
   </li>
 </ul>

@@ -4,7 +4,7 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     {% endif %}
     <div class="img-svg"><img src="{{ absolute_url(asset('assets/img/logo-simple.svg')) }}" alt=""></div>
-    <h1>Catalogo</h1>
+    <h1>Catálogo</h1>
     {% if error %}
         <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
